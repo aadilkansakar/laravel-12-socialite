@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'google_id',
-        'github_id',
+        'linkedin_id',
         'discord_id',
     ];
 

@@ -38,7 +38,7 @@
                         <path d="M2 12l10 5 10-5" />
                     </svg>
                 </div>
-                <h2>Hi Again!</h2>
+                <h2>Welcome</h2>
                 <p>Sign in to continue your journey</p>
             </div>
 
@@ -171,11 +171,9 @@
                 </a>
             </div>
 
-            @if (Route::has('register'))
-                <div class="signup-link">
-                    <p>New to our platform? <a href="{{ route('register') }}">Create account</a></p>
-                </div>
-            @endif
+            <div class="signup-link">
+                <p>Already have account? <a href="{{ route('login') }}">Sign In</a></p>
+            </div>
 
             <div class="success-message" id="successMessage">
                 <div class="success-wave"></div>
