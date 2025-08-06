@@ -104,17 +104,17 @@
                     </div>
                     <div class="button-ripple"></div>
                 </button>
-            </form>
+            </form> --}}
 
             <div class="divider">
                 <div class="divider-line">
                     <div class="line-gradient"></div>
                 </div>
-                <span>or continue with</span>
+                <a href="{{ route('home') }}"><span>Payment</span></a>
                 <div class="divider-line">
                     <div class="line-gradient"></div>
                 </div>
-            </div> --}}
+            </div>
 
             <div class="social-login">
                 <a href="{{ route('social.login', 'google') }}" class="social-btn">

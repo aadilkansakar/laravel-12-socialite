@@ -10,9 +10,7 @@ class KhaltiController extends Controller
     public function payToKhalti()
     {
         // Logic to redirect to Khalti payment gateway
-        $this->processKhaltiPayment();
-
-        return redirect()->route('home')->with('status', 'Redirecting to Khalti...');
+        return $this->processKhaltiPayment();
     }
 
     private function processKhaltiPayment()
@@ -25,7 +23,7 @@ class KhaltiController extends Controller
 
         $payload = [
             'return_url' => 'http://127.0.0.1:8000/khalti/callback', // Your callback URL
-            'website_url' => 'http://127.0.0.1:8000', // User's mobile number
+            'website_url' => 'http://127.0.0.1:8000', // Your website URL
             'amount' => '2000', // Amount in paisa
             'purchase_order_id' => '1234', // Unique order ID
             'purchase_order_name' => 'Test', // Name of the order
@@ -40,17 +38,44 @@ class KhaltiController extends Controller
         if ($response && isset($response['pidx']) && isset($response['payment_url'])) {
             // Handle successful payment initiation
             return redirect($response['payment_url']); // Redirect to Khalti's payment page
-        } else {
-            // Handle error in payment initiation
-            return redirect()->route('home')->with('error', 'Payment initiation failed.');
         }
+
+        return redirect()->route('payment.fail')->with('error', 'Payment initiation failed.');
     }
 
     public function handleKhaltiCallback(Request $request)
     {
-        // Logic to handle the callback from Khalti after payment
-        // Validate the payment and update the order status accordingly
+        if ($this->processKhaltiVerification($request)) {
+            return redirect()->route('payment.success')->with('status', 'Payment successful!');
+        }
 
-        return redirect()->route('home')->with('status', 'Payment successful!');
+        return redirect()->route('payment.fail')->with('error', 'Payment verification failed.');
+    }
+
+    private function processKhaltiVerification(Request $request)
+    {
+        // Here you would typically verify the payment with Khalti's API
+        // This is a placeholder for the actual implementation
+        // You might use Khalti's SDK or API to verify the payment
+
+        $pidx = $request->input('pidx'); // Payment ID from Khalti
+        $key = '52e9a19de4c04c628754031189347d22'; // Replace with your Khalti public key
+
+        $verificationUrl = 'https://dev.khalti.com/api/v2/epayment/lookup/';
+
+        $response = Http::timeout(30)->withHeaders([
+            'Authorization' => 'Key ' . $key,
+        ])->post($verificationUrl, [
+            'pidx' => $pidx,
+        ]);
+
+        $responseData = $response->json();
+
+        if ($response->successful() && isset($responseData['status']) && $responseData['status'] === 'Completed') {
+            // Handle successful verification
+            return true;
+        }
+
+        return false; // Handle verification failure
     }
 }

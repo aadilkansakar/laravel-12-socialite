@@ -165,7 +165,7 @@
                 <div class="row">
                     <div class="col-md-5 d-md-block d-none p-0 box">
                         <div class="card rounded-0 border-0 card1" id="bill">
-                            <h3 id="heading1">Payment Summary</h3>
+                            <h3 id="heading1">{{ Auth::user()->name }}</h3>
                             <div class="row">
                                 <div class="col-lg-7 col-8 mt-4 line pl-4">
                                     <h2 class="bill-head">Electronics</h2>
@@ -251,6 +251,12 @@
                                     <div class="col-md-6">
                                         <input type="submit" value="MAKE A PAYMENT &nbsp; &#xf178;"
                                             class="btn btn-info placeicon">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="{{ route('logout') }}"
+                                            class="btn btn-info placeicon">LOGOUT</a>
                                     </div>
                                 </div>
                             </div>
