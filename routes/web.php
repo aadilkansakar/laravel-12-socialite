@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EsewaController;
+use App\Http\Controllers\KhaltiController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,7 +11,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', function () {
-        return response('Welcome to the Home Page! This is a placeholder for your home route. You can customize this view as needed.', 200);
+        return view('home');
     })->name('home');
 });
 
@@ -26,3 +28,8 @@ Route::get('/login', function () {
 Route::get('/socialite/{provider}', [LoginController::class, 'socialiteRedirect'])->name('social.login');
 
 Route::get('/socialite/callback/{provider}', [LoginController::class, 'handleProviderCallback'])->name('social.callback');
+
+Route::get('/esewa/pay', [EsewaController::class, 'payToEsewa'])->name('esewa.pay');
+
+Route::get('/khalti/pay', [KhaltiController::class, 'payToKhalti'])->name('khalti.pay');
+Route::get('/khalti/callback', [KhaltiController::class, 'handleKhaltiCallback'])->name('khalti.callback');
